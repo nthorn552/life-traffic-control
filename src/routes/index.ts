@@ -5,4 +5,4 @@ const baseRouter = Router();
 
 baseRouter.use('/pizza', pizzaRouter);
 
-export default baseRouter
+export default baseRouter;
