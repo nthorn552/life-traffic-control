@@ -29,32 +29,40 @@ const PizzaLocations: VendorDetails[] = [
 
 type PizzaListing = {
   ingredients: string;
+  storeHours: string;
   dayOfWeek?: string;
 };
 
-async function getAll(): Promise<{ location: string; listings: PizzaListing[] }[]> {
+async function getAll(): Promise<{ name: string; listings: PizzaListing[] }[]> {
   const results: {
-    location: string;
+    name: string;
     listings: PizzaListing[];
   }[] = await Promise.all(
     PizzaLocations.map(
-      async (pizzaLocation: VendorDetails): Promise<{ location: string; listings: PizzaListing[] }> => {
+      async (pizzaLocation: VendorDetails): Promise<{ name: string; listings: PizzaListing[] }> => {
         const pizzaResult: AxiosResponse = await axios.get(pizzaLocation.url);
         const pizzaCheerio$ = cheerio.load(pizzaResult.data);
         const dailyPizzaList = pizzaCheerio$('.summary-content').find('div.summary-excerpt');
         const locationListings: PizzaListing[] = [];
         dailyPizzaList.each((index: number, elem: CheerioElement) => {
-          const contents = pizzaCheerio$(elem).find('p');
-          const dayString = contents.first().text();
-          if (!locationListings.some((pizzaListing) => pizzaListing.dayOfWeek == dayString)) {
+          const contents = pizzaCheerio$(elem)
+            .find('p')
+            .map((dayIndex, cheerioElem) => {
+              return pizzaCheerio$(cheerioElem).text();
+            });
+          const dayOfWeek = contents[0].toString();
+          const storeHours = contents[1].toString(); // Temporary, during COVID
+          const ingredients = contents[2].toString();
+          if (!locationListings.some((pizzaListing) => pizzaListing.dayOfWeek === dayOfWeek)) {
             locationListings.push({
-              dayOfWeek: dayString,
-              ingredients: contents.next('p').text(),
+              dayOfWeek,
+              storeHours,
+              ingredients,
             });
           }
         });
         return {
-          location: pizzaLocation.locationKey,
+          name: pizzaLocation.locationKey,
           listings: locationListings,
         };
       }

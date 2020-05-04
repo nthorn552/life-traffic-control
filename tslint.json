@@ -10,6 +10,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": [true, "single"],
+    "triple-equals": [true, "allow-null-check", "allow-undefined-check"],
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]
   }
 }
