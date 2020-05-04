@@ -1,0 +1,22 @@
+{
+  "name": "life-traffic-control",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nthorn552/life-traffic-control.git"
+  },
+  "author": "nthorn552",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nthorn552/life-traffic-control/issues"
+  },
+  "homepage": "https://github.com/nthorn552/life-traffic-control#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
